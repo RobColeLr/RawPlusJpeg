@@ -1,0 +1,32 @@
+%Image::ExifTool::UserDefined = (
+    'Image::ExifTool::Composite' => {
+        # [advanced] select largest JPEG preview image
+        BigImage => {
+            Desire => {
+                0 => 'JpgFromRaw',
+                1 => 'PreviewImage',
+                2 => 'OtherImage',
+                # (DNG and A100 ARW may be have 2 PreviewImage's)
+                3 => 'PreviewImage (1)',
+            },
+            # ValueConv code reference
+            # Inputs: 0) reference to list of values, 1) ExifTool object
+            ValueConv => sub {
+                my $val = shift;
+                my ($image, $bigImage, $len, $bigLen);
+                foreach $image (@$val) {
+                    next unless ref $image eq 'SCALAR';
+                    # check for JPEG image (or binary data if -b not used)
+                    next unless $$image =~ /^(\xff\xd8\xff|Binary data (\d+))/;
+                    $len = $2 || length $$image; # get image length
+                    # save largest image
+                    next if defined $bigLen and $bigLen >= $len;
+                    $bigLen = $len;
+                    $bigImage = $image;
+                }
+                return $bigImage;
+            },
+        },
+    },
+);
+1; #end

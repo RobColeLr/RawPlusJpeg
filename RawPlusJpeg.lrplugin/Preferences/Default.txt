@@ -1,0 +1,173 @@
+--[[
+        Plugin configuration file (aka 'Advanced Settings').
+        
+        Note: Named members of return table are accessible in source code as:
+        
+            app:getPref( name )
+            
+            provided there is no app:initPref( name, val ) or app:setPref( name, val ) statements executed prior,
+            which hide/override the named members in this file.
+--]]
+
+-- declare return table
+local _t = {}
+
+
+
+--------------------------------------------
+--        Elare Plugin Framework preferences.
+---------------------------------------------
+--        (not all are used in every plugin)
+---------------------------------------------
+--        Note: If plugin defines a UI for these,
+--        then values in here will be ineffective.
+--------------------------------------------
+
+
+--[[
+        Save Metadata Mode - what technique used when metadata must be saved.
+        
+        Examples:
+        
+            _t.saveMetadataMode = 'auto'       -- automatic (scripted keystroke method, which may not work on some systems).
+            _t.saveMetadataMode = 'manual'     -- manual (no keystrokes issued, user must take responsibility each time, then answer a prompt).
+            _t.saveMetadataMode = nil          -- let plugin decide.
+--]]
+_t.saveMetadataMode = nil
+
+
+
+--[[
+        Keyboard character issued to save metadata.
+        
+        *** Only applies when saveMetadataMode is 'auto'.
+        
+        Examples:
+        
+            _t.saveMetadataKeyChar = 's'        -- std english keyboards.
+            _t.saveMetadataKeyChar = nil        -- let plugin decide
+--]]
+_t.saveMetadataKeyChar = nil
+
+
+
+--[[
+        How long (in seconds) metadata save box is displayed in manual mode to give user a chance to save metadata manually.
+        
+        *** Only applies when saveMetadataMode is 'manual'.
+        
+        Examples:
+        
+            _t.delayForManualMetadataSaveBox = 2          -- 2 seconds.
+            _t.delayForManualMetadataSaveBox = nil        -- let plugin decide
+--]]
+_t.delayForManualMetadataSaveBox = nil
+
+
+
+--[[
+        Maximum time to wait (in seconds) in manual mode, before giving up on metadata read.
+        
+        *** Despite the name, applies in Windows too, but only when readMetadataMode is 'manual'.
+        
+        Examples:
+        
+            _t.timeRequiredToReadMetadataOnMac = 7          -- 7 seconds.
+            _t.timeRequiredToReadMetadataOnMac = nil        -- let plugin decide
+--]]
+_t.timeRequiredToReadMetadataOnMac = nil
+
+
+
+--[[
+        Read Metadata Mode - what technique used when metadata must be read.
+        
+        *** Best *not* to set this to 'auto' if using Mac. On Windows, 'auto' is preferred, if it works on your system/keyboard.
+        
+        Examples:
+        
+            _t.readMetadataMode = 'auto'       -- automatic (scripted keystroke method, which may not work on some systems).
+            _t.readMetadataMode = 'manual'     -- manual (no keystrokes issued, user must take responsibility each time, then answer a prompt).
+            _t.readMetadataMode = nil          -- let plugin decide.
+--]]
+_t.readMetadataMode = nil
+
+
+
+--[[
+        Alt-keyboard character issued to read metadata.
+        
+        *** Does not apply on Mac.
+        *** Only applies when readMetadataMode is 'auto'.
+        
+        
+        Examples:
+        
+            _t.readMetadataKeyChar = 'mr'        -- std english keyboards.
+            _t.readMetadataKeyChar = nil        -- let plugin decide
+--]]
+_t.readMetadataKeySeq = nil
+
+
+
+--[[
+        Keyboard character issued to invoke grid mode of library module.
+        
+        Examples:
+        
+            _t.gridModeChar = 'g'        -- std english keyboards.
+            _t.gridModeChar = nil        -- let plugin decide
+--]]
+_t.gridModeChar = nil
+
+
+
+--[[
+        Base time to wait (in seconds) for various time-sensitive operations that involve delays for settling time in Lightroom.
+        
+        Examples:
+        
+            _t.timebase = .1          -- 1/10th of a second.
+            _t.timebase = nil        -- let plugin decide
+--]]
+_t.timebase = nil
+
+
+
+--[[
+        Exiftool - path to executable.
+        
+        Windows Examples:
+        
+            _t.exifToolApp = 'C:\Programs\exiftool.exe'     -- Custom
+            _t.exifToolApp = nil                            -- let plugin decide (use built-in).
+        
+        
+        App Examples:
+        
+            _t.exifToolApp = '/usr/bin/exiftool'            -- Default installation path.
+            _t.exifToolApp = nil                            -- let plugin decide (use built-in).
+--]]
+if WIN_ENV then
+    _t.exifToolApp = nil
+elseif MAC_ENV then
+    _t.exifToolApp = nil -- '/usr/bin/exiftool'
+end
+
+
+
+--[[
+        Local viewer parameters.
+        
+        In case your viewer needs more parameters than just the files (paths).
+        
+        Examples:
+        
+            _t.localViewerParam = "-v -c" -- these help...
+--]]
+_t.localViewerParam = nil
+
+
+
+-- return config table
+return _t
